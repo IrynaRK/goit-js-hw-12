@@ -14,11 +14,13 @@ const searchForm = document.querySelector('.form');
 const loadMoreButton = document.getElementById('load-more');
 let currentQuery = '';
 let currentPage = 1;
+let totalLoadedImages = 0;
 
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
   currentQuery = event.target.elements['search-text'].value.trim();
   currentPage = 1;
+  totalLoadedImages = 0;
 
   if (!currentQuery) {
     return iziToast.error({ message: 'Будь ласка, введіть запит!' });
@@ -37,9 +39,16 @@ searchForm.addEventListener('submit', async event => {
         message:
           'Sorry, there are no images matching your search query. Please try again!',
       });
+      hideLoadMoreButton();
     } else {
       createGallery(response.hits);
-      showLoadMoreButton();
+      totalLoadedImages = response.hits.length;
+
+      if (totalLoadedImages < response.totalHits) {
+        showLoadMoreButton();
+      } else {
+        hideLoadMoreButton();
+      }
     }
   } catch (error) {
     handleError(error);
@@ -59,6 +68,21 @@ loadMoreButton.addEventListener('click', async () => {
       iziToast.info({ message: "You've reached the end of search results." });
     } else {
       createGallery(response.hits);
+      totalLoadedImages += response.hits.length;
+
+      console.log(
+        `Завантажено: ${totalLoadedImages}, Всього доступно: ${response.totalHits}`
+      );
+
+      if (totalLoadedImages >= response.totalHits) {
+        hideLoadMoreButton();
+      } else {
+        showLoadMoreButton();
+      }
+      window.scrollBy({
+        top: document.querySelector('.gallery').offsetHeight * 2,
+        behavior: 'smooth',
+      });
     }
   } catch (error) {
     handleError(error);
