@@ -46,17 +46,20 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-  loader.classList.remove('hidden');
+  loader.style.display = 'block';
+  loader.classList.add('visible');
 }
 
 export function hideLoader() {
-  loader.classList.add('hidden');
+  loader.style.display = 'none';
+  loader.classList.remove('visible');
 }
 
 export function showLoadMoreButton() {
-  loadMoreButton.classList.remove('hidden');
+  loadMoreButton.style.display = 'block';
 }
 
 export function hideLoadMoreButton() {
-  loadMoreButton.classList.add('hidden');
+  // loadMoreButton.classList.add('hidden');
+  loadMoreButton.style.display = 'none';
 }

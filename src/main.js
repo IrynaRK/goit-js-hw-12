@@ -44,10 +44,11 @@ searchForm.addEventListener('submit', async event => {
       createGallery(response.hits);
       totalLoadedImages = response.hits.length;
 
-      if (totalLoadedImages < response.totalHits) {
+      if (totalLoadedImages + response.hits.length < response.totalHits) {
         showLoadMoreButton();
       } else {
         hideLoadMoreButton();
+        iziToast.info({ message: "You've reached the end of search results." });
       }
     }
   } catch (error) {
@@ -75,7 +76,8 @@ loadMoreButton.addEventListener('click', async () => {
       );
 
       if (totalLoadedImages >= response.totalHits) {
-        hideLoadMoreButton();
+        // hideLoadMoreButton();
+        iziToast.info({ message: "You've reached the end of search results." });
       } else {
         showLoadMoreButton();
       }
