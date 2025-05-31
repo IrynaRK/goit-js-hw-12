@@ -44,7 +44,7 @@ searchForm.addEventListener('submit', async event => {
       createGallery(response.hits);
       totalLoadedImages = response.hits.length;
 
-      if (totalLoadedImages + response.hits.length < response.totalHits) {
+      if (totalLoadedImages + response.hits.length <= response.totalHits) {
         showLoadMoreButton();
       } else {
         hideLoadMoreButton();
